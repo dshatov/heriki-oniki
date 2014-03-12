@@ -9,6 +9,27 @@ function love.load()
 	Grid[2][1] = 'o'
 end
 
+function love.update(dt)
+	
+end
+
+function love.mousepressed(x, y, button)
+	if button == "l" then
+		LastMouse = {}
+		LastMouse.x = x
+		LastMouse.y = y
+	end
+end
+
+function love.mousereleased(x, y, button)
+	if button == "l" and LastMouse ~= nil then
+		if LastMouse.x == x and LastMouse.y == y then
+			print("LKM: x=" .. x .. ", y=" .. y)
+			LastMouse = nil
+		end
+	end
+end
+
 function drawObjects(x_offset, y_offset, zoom)
 	for x = 0, 2 do
 		for y = 0, 2 do
