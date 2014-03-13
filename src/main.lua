@@ -1,4 +1,5 @@
 function love.load()
+	CurZoom = GRID_MAX_ZOOM
 	Grid = {}
 	for i = 0, 2 do
 		Grid[i] = {}
@@ -45,14 +46,18 @@ function love.mousepressed(x, y, button)
 		LastMouse = {}
 		LastMouse.x = x
 		LastMouse.y = y
+	elseif button == "wd" and CurZoom < GRID_MAX_ZOOM then
+		CurZoom = CurZoom + 8
+	elseif button == "wu" and CurZoom > GRID_MIN_ZOOM then
+		CurZoom = CurZoom - 8
 	end
 end
 
 function love.mousereleased(x, y, button)
 	if button == "l" and LastMouse ~= nil then
 		if LastMouse.x == x and LastMouse.y == y then
-			local logic_x = math.floor((x - 16) / 128)
-			local logic_y = math.floor((y - 16) / 128)
+			local logic_x = math.floor((x - GRID_X_OFFSET) / CurZoom)
+			local logic_y = math.floor((y - GRID_Y_OFFSET) / CurZoom)
 			LastMouse = nil
 			if logic_x >= 0 and logic_x < 3 and logic_y >= 0 and logic_y < 3 then
 				if Grid[logic_x][logic_y] == nil then
@@ -92,11 +97,11 @@ function drawGrid(x_offset, y_offset, zoom, width, height)
 end
 
 function love.draw()
-	love.graphics.setColor(128, 0, 0, 255)
-	drawGrid(16, 16, 128, 3, 3)
+	love.graphics.setColor(128, 128, 0, 255)
+	drawGrid(GRID_X_OFFSET, GRID_Y_OFFSET, CurZoom, 3, 3)
 
 	love.graphics.setColor(0, 128, 0, 255)
-	drawObjects(16, 16, 128)
+	drawObjects(GRID_X_OFFSET, GRID_Y_OFFSET, CurZoom)
 	love.graphics.setColor(255, 255, 255, 255)
 	if Winner ~= nil then
 		love.graphics.print('Winner: ' .. Winner, 16, 408)
