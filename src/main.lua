@@ -1,9 +1,11 @@
+require("Grid")
+
 function love.load()
 	CurZoom = GRID_MAX_ZOOM
-	Grid = {}
-	for i = 0, 2 do
-		Grid[i] = {}
-	end
+	InitGrid()
+
+
+
 	CurPlayer = 'x'
 end
 
@@ -14,9 +16,9 @@ function checkLine(pt, dir, len)
 			pt.y + dir.dy * (len - 1) < 0 then
 		return nil
 	else
-		local owner = Grid[pt.x][pt.y]
+		local owner = Grid.getPoint(pt.x, pt.y)
 		for i = 1, len - 1 do
-			if Grid[pt.x + dir.dx * i][pt.y + dir.dy * i] ~= owner then
+			if Grid.getPoint(pt.x + dir.dx * i, pt.y + dir.dy * i) ~= owner then
 				return nil
 			end
 		end
@@ -60,8 +62,8 @@ function love.mousereleased(x, y, button)
 			local logic_y = math.floor((y - GRID_Y_OFFSET) / CurZoom)
 			LastMouse = nil
 			if logic_x >= 0 and logic_x < 3 and logic_y >= 0 and logic_y < 3 then
-				if Grid[logic_x][logic_y] == nil then
-					Grid[logic_x][logic_y] = CurPlayer
+				if Grid.getPoint(logic_x, logic_y) == nil then
+					Grid.setPoint(logic_x, logic_y, CurPlayer)
 					checkEndOfGame()
 					if CurPlayer == 'x' then
 						CurPlayer = 'o'
@@ -77,10 +79,10 @@ end
 function drawObjects(x_offset, y_offset, zoom)
 	for x = 0, 2 do
 		for y = 0, 2 do
-			if Grid[x][y] == 'x' then
+			if Grid.getPoint(x, y) == 'x' then
 				love.graphics.line(x_offset + x * zoom, y_offset + y * zoom, x_offset + (x + 1) * zoom, y_offset + (y + 1) * zoom)
 				love.graphics.line(x_offset + (x + 1) * zoom, y_offset + y * zoom, x_offset + x * zoom, y_offset + (y + 1) * zoom)
-			elseif Grid[x][y] == 'o' then
+			elseif Grid.getPoint(x, y) == 'o' then
 				love.graphics.circle("line", x_offset + (x + 0.5) * zoom, y_offset + (y + 0.5) * zoom, zoom / 2, 100)
 			end
 		end
@@ -97,10 +99,10 @@ function drawGrid(x_offset, y_offset, zoom, width, height)
 end
 
 function love.draw()
-	love.graphics.setColor(128, 128, 0, 255)
+	love.graphics.setColor(64, 128, 64, 255)
 	drawGrid(GRID_X_OFFSET, GRID_Y_OFFSET, CurZoom, 3, 3)
 
-	love.graphics.setColor(0, 128, 0, 255)
+	love.graphics.setColor(255, 64, 0, 255)
 	drawObjects(GRID_X_OFFSET, GRID_Y_OFFSET, CurZoom)
 	love.graphics.setColor(255, 255, 255, 255)
 	if Winner ~= nil then
