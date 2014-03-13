@@ -1,10 +1,10 @@
 require("Grid")
+require("GridDrawable")
 
 function love.load()
 	CurZoom = GRID_MAX_ZOOM
 	InitGrid()
-
-
+--	CenterField = {x = 0, y = 0}
 
 	CurPlayer = 'x'
 end
@@ -45,9 +45,7 @@ end
 
 function love.mousepressed(x, y, button)
 	if button == "l" and Winner == nil then
-		LastMouse = {}
-		LastMouse.x = x
-		LastMouse.y = y
+		LastMouse = {x = x, y = y}
 	elseif button == "wd" and CurZoom < GRID_MAX_ZOOM then
 		CurZoom = CurZoom + 8
 	elseif button == "wu" and CurZoom > GRID_MIN_ZOOM then
@@ -73,28 +71,6 @@ function love.mousereleased(x, y, button)
 				end
 			end
 		end
-	end
-end
-
-function drawObjects(x_offset, y_offset, zoom)
-	for x = 0, 2 do
-		for y = 0, 2 do
-			if Grid.getPoint(x, y) == 'x' then
-				love.graphics.line(x_offset + x * zoom, y_offset + y * zoom, x_offset + (x + 1) * zoom, y_offset + (y + 1) * zoom)
-				love.graphics.line(x_offset + (x + 1) * zoom, y_offset + y * zoom, x_offset + x * zoom, y_offset + (y + 1) * zoom)
-			elseif Grid.getPoint(x, y) == 'o' then
-				love.graphics.circle("line", x_offset + (x + 0.5) * zoom, y_offset + (y + 0.5) * zoom, zoom / 2, 100)
-			end
-		end
-	end
-end
-
-function drawGrid(x_offset, y_offset, zoom, width, height)
-	for i = 0, width do
-		love.graphics.line(x_offset + i * zoom, y_offset, x_offset + i * zoom, y_offset + zoom * width)
-	end
-	for i = 0, height do
-		love.graphics.line(x_offset, y_offset + i * zoom, x_offset + zoom * height, y_offset + i * zoom)
 	end
 end
 
