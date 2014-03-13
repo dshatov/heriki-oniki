@@ -1,6 +1,7 @@
 function drawObjects(x_offset, y_offset, zoom)
-	for x = 0, 2 do
-		for y = 0, 2 do
+	local maxCoord = math.floor((WINDOW_WIDTH - GRID_X_OFFSET * 2) / CurZoom) - 1
+	for x = 0, maxCoord do
+		for y = 0, maxCoord do
 			if Grid.getPoint(x, y) == 'x' then
 				love.graphics.line(x_offset + x * zoom, y_offset + y * zoom, x_offset + (x + 1) * zoom, y_offset + (y + 1) * zoom)
 				love.graphics.line(x_offset + (x + 1) * zoom, y_offset + y * zoom, x_offset + x * zoom, y_offset + (y + 1) * zoom)

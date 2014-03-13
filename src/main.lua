@@ -58,8 +58,9 @@ function love.mousereleased(x, y, button)
 		if LastMouse.x == x and LastMouse.y == y then
 			local logic_x = math.floor((x - GRID_X_OFFSET) / CurZoom)
 			local logic_y = math.floor((y - GRID_Y_OFFSET) / CurZoom)
+			local logic_max = math.floor((WINDOW_WIDTH - GRID_X_OFFSET * 2) / CurZoom) - 1
 			LastMouse = nil
-			if logic_x >= 0 and logic_x < 3 and logic_y >= 0 and logic_y < 3 then
+			if logic_x >= 0 and logic_x <= logic_max and logic_y >= 0 and logic_y <= logic_max then
 				if Grid.getPoint(logic_x, logic_y) == nil then
 					Grid.setPoint(logic_x, logic_y, CurPlayer)
 					checkEndOfGame()
