@@ -10,29 +10,22 @@ function love.load()
 end
 
 function checkLine(pt, dir, len)
-	if pt.x + dir.dx * (len - 1) > 2 or
-			pt.x + dir.dx * (len - 1) < 0 or
-			pt.y + dir.dy * (len - 1) > 2 or
-			pt.y + dir.dy * (len - 1) < 0 then
-		return nil
-	else
-		local owner = Grid.getPoint(pt.x, pt.y)
-		for i = 1, len - 1 do
-			if Grid.getPoint(pt.x + dir.dx * i, pt.y + dir.dy * i) ~= owner then
-				return nil
-			end
+	local owner = Grid.getPoint(pt.x, pt.y)
+	for i = 1, len - 1 do
+		if Grid.getPoint(pt.x + dir.dx * i, pt.y + dir.dy * i) ~= owner then
+			return nil
 		end
-		return owner
 	end
+	return owner
 end
 
 function checkEndOfGame()
-	for x = 0, 2 do
-		for y = 0, 2 do
+	for x = Grid.borders.left, Grid.borders.right do
+		for y = Grid.borders.top, Grid.borders.bottom do
 			for dx = -1, 1 do
 				for dy = -1, 1 do
 					if dx ~= 0 or dy ~= 0 then
-						Winner = checkLine({x=x, y=y}, {dx=dx, dy=dy}, 3)
+						Winner = checkLine({x=x, y=y}, {dx=dx, dy=dy}, 5)
 						if Winner ~= nil then
 							return
 						end

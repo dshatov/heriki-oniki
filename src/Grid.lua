@@ -24,9 +24,9 @@ function InitGrid()
 				Grid.borders.right = x
 			end
 		end
-		if Grid.borders.top < y then
+		if Grid.borders.top > y then
 			Grid.borders.top = y
-		elseif Grid.borders.bottom > y then
+		elseif Grid.borders.bottom < y then
 			Grid.borders.bottom = y
 		end
 		Grid[x][y] = val

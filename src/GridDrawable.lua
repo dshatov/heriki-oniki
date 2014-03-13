@@ -19,4 +19,3 @@ function drawGrid(x_offset, y_offset, zoom, width, height)
 		love.graphics.line(x_offset, y_offset + i * zoom, x_offset + zoom * lineCount, y_offset + i * zoom)
 	end
 end
-
